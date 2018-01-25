@@ -1,0 +1,50 @@
+"""
+Kevin Murphy
+1/16/2018
+
+check-if-files-exist.py
+Takes a file containing filenames delimited by newlines and checks if those files exist
+in a destination folder.
+"""
+
+import os, sys
+
+def main():
+    try:
+        inFile = sys.argv[1]
+        destPath = sys.argv[2]
+    except IndexError:
+        print 'usage: python check-if-files-exist.py ${images.txt} ${path/to/save}'
+        exit(1)
+
+    if os.path.exists( inFile ):
+        with open( inFile, 'r' ) as f:
+            lines = f.read().splitlines()
+    else:
+        print 'unable to find input file {%s}' % inFile
+        exit(1)
+
+    if os.path.exists( destPath ) == False:
+        print 'note: path {%s} does not exist ... exiting now' % destPath
+        exit(1)
+
+    found = 0
+    total = 0
+    for filename in lines:
+        if filename != '':
+
+            filepath = os.path.join( destPath, filename )
+
+            if os.path.exists( filepath ) == False:
+                print 'unable to file file: %s' % filepath
+            else:
+                found += 1
+
+            total += 1
+
+    print 'found %d out of %d filenames' % (found, total)
+
+    return
+
+if __name__ == "__main__":
+    main()

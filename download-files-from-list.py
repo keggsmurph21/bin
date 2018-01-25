@@ -1,0 +1,58 @@
+"""
+Kevin Murphy
+1/16/2018
+
+dlfiles.py
+Takes a file containing URLs delimited by newlines and saves the contents of each URL
+to a destination.
+"""
+
+import os, sys, urllib
+
+def main():
+    try:
+        inFile = sys.argv[1]
+        destPath = sys.argv[2]
+    except IndexError:
+        print 'usage: python dlfiles.py ${images.txt} ${path/to/save}'
+        exit(1)
+
+    if os.path.exists( inFile ):
+        with open( inFile, 'r' ) as f:
+            lines = f.read().splitlines()
+    else:
+        print 'unable to find input file {%s}' % inFile
+        exit(1)
+
+    if os.path.exists( destPath ) == False:
+        print 'note: path {%s} does not exist ... creating new directory' % destPath
+        os.mkdir( destPath )
+
+    count = 0
+    for url in lines:
+        if url != '':
+
+            print 'currently downloading: %s' url
+
+            if 'fishesofaustralia' in url:
+                prefix = 'FOA_'
+            elif 'fishbase' in url:
+                prefix = 'FB_'
+            else:
+                print 'unable to find prefix for %s' % url
+                prefix = ''
+
+            destFileName = prefix + os.path.basename( url )
+            destFilePath = os.path.join( destPath, destFileName )
+
+            # save to file
+            urllib.urlretrieve( url, destFilePath )
+
+            count += 1
+
+    print 'saved %d files to %s' % (count, destPath)
+
+    return
+
+if __name__ == "__main__":
+    main()
