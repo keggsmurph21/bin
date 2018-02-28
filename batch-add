@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Reads a list of database tables from stdin
+# and generates SQL commands to be run to add a
+# specific user to each of the tables containing
+# the string `_users`; sends output to stdout.
+
+# optional arguments
+# $1 -> $username       (e.g. `local_field`)
+# $2 -> $password_hash  (e.g. `cd0c565d1b10aa4a95adde320fd6d7ec`)
+# $3 -> $is_admin_flag  (e.g. `0` or `1`)
+
+# to get the list of database tables from the default
+# localhost MAMP setup, go to http://127.0.0.1:8888/phpMyAdmin/
+# and navigate to
+# > talking_dictionaries database
+# > open SQL tab
+# > paste "SHOW TABLES;" into the query box
+# > press GO
+# > copy the list of tables to file (e.g. `/tmp/tables.txt`)
+# > run $ cat /tmp/tables.txt | ./add-user-to-all-tables my_username my_password_hash my_admin_flag > ./out.txt
+# > open SQL tab (on phpMyAdmin)
+# > copy the contents of ./out.txt to the textbox
+# > press GO
+# > the user should now be added to all dictionaries!
+
+exec cat "/dev/stdin" | \
+exec sed -n "/_users/"p | \
+exec sed "s/\(.*\)/INSERT IGNORE INTO talking_dictionaries.\1 (uname, pass, super) VALUES (\"${1:-USERNAME}\", \"${2:-PASSWORD_HASH}\", \"${3:-ADMIN_FLAG}\"); /" \
+> /dev/stdout
