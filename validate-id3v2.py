@@ -28,10 +28,10 @@ def check_errors( data, artist, album ):
     got_album  = data['album_title']
 
     if artist.lower() != got_artist.lower():
-        logger.warning( 'data mismatch (expected `%s` got `%s`)' % (artist, got_artist) )
+        logger.warning( 'data mismatch\n\texpected `%s`\n\tgot `%s`)' % (artist, got_artist) )
         return True
     if album.lower() != got_album.lower():
-        logger.warning( 'data mismatch (expected `%s` got `%s`)' % (album, got_album) )
+        logger.warning( 'data mismatch\n\texpected `%s`\n\tgot `%s`)' % (album, got_album) )
         return True
     return False
 
@@ -43,7 +43,7 @@ def check_metadata( client_id, user_id, path, fix_errors=False ):
         if dirs == []: # album
             artist = os.path.basename(os.path.dirname(root))
             album  = os.path.basename(root)
-            album_path = os.path.join( path, album )
+            album_path = path if fix_errors else os.path.join( path, album )
             print( ' - %s' % album  )
 
             data = pygn.search( clientID=client_id, userID=user_id, artist=artist, album=album )
@@ -53,6 +53,7 @@ def check_metadata( client_id, user_id, path, fix_errors=False ):
             if check_errors( data, artist, album ):
                 if fix_errors:
                     resolve_errors( data, artist, album )
+                    print() # spacing
                 else:
                     with open( ERROR_FILE_PATH, 'a' ) as f:
                         f.write( '%s\n' % album_path )
@@ -95,13 +96,13 @@ def resolve_error( data, field ):
     res = input( 'change %s (to `%s`)? ' % (field, data[data_field]) )
 
     if res == '':
-        logger.debug( 'changed %s to `%s`' % (field, data[data_field]) )
+        logger.info( 'changed %s to `%s`' % (field, data[data_field]) )
         return True
-    elif res == '/':
-        logger.debug( 'skipping...' )
+    elif res == '\\':
+        logger.info( 'skipping...' )
         return None
     else:
-        logger.debug( 'changed %s to `%s`' % (field, res) )
+        logger.info( 'changed %s to `%s`' % (field, res) )
         data[data_field] = res
         return True
 
@@ -143,8 +144,6 @@ def update_metadata( album_path, file_name, data ):
         album_art_data = open( album_art_path, 'rb' ).read()
         file_data.images.set(3, album_art_data, 'image/jpeg')
 
-    for i in [file_data.artist, file_data.album_artist, file_data.album, file_data.original_release_date, file_data.genre, file_data.images]:
-        pass#print(i)
     try:
         file_data.save()
     except (eyed3.id3.tag.TagException, NotImplementedError):
@@ -172,13 +171,33 @@ def main():
     parser.add_argument( '-v', '--verbose', action='count', default=2 )
     args = parser.parse_args()
 
-    level = [ logging.DEBUG,logging.INFO,logging.WARNING,logging.ERROR,logging.CRITICAL ][ 4 if args.quiet else max(4-args.verbose,0) ]
+    level = 50 if args.quiet else max(5-args.verbose,1)*10
     logger = logging.getLogger(__name__)
     logger.setLevel( level )
 
     eyed3.log.setLevel(logging.ERROR)
     user_id = pygn.register( args.gnid )
     src = validate_path( args.source, require_valid=True )
+
+    if args.only_missing_artwork:
+        with open( NO_ALBUM_ART_FILE_PATH ) as f:
+            paths = [line.strip() for line in f.readlines()]
+            for path in paths:
+                album_art_path = os.path.join( path, ALBUM_ART_FILE_NAME )
+                if os.path.exists( album_art_path ):
+                    album_art_data = open( album_art_path, 'rb' ).read()
+                    for root, dirs, files in os.walk(path):
+                        for f in files:
+                            file_path = os.path.join(path,f)
+                            file_data = eyed3.load( file_path )
+                            if file_data != None: # whatever eyed3 can't load
+                                file_data.tag.images.set(3, album_art_data, 'image/jpeg')
+                                file_data.tag.save()
+                            else:
+                                logger.warning( 'couldn\'t save to file `%s`' % file_path )
+                else:
+                    logger.warning( 'unable to find album art `%s`' % album_art_path )
+        exit()
 
     if args.errors == False:
         with open( args.artists ) as f:
@@ -192,7 +211,7 @@ def main():
         with open( ERROR_FILE_PATH ) as f:
             errors = [line.strip() for line in f.readlines()]
             if len(errors):
-                print( '\n-----------\nRESOLVE ERRORS: enter `/` to skip, `` to accept changes, or new value' )
+                print( '\n-----------\nRESOLVE ERRORS: enter `\\` to skip, `` to accept changes, or new value\n' )
             for err_path in errors:
                 check_metadata( args.gnid, user_id, err_path, fix_errors=True )
 
