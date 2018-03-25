@@ -8,7 +8,7 @@ a specified directory.
 '''
 
 import argparse
-import eyed3 # sudo -H pip2 install eyeD3
+import eyed3 # sudo -H pip3 install eyeD3
 import json
 import logging
 import os
@@ -17,12 +17,25 @@ import requests
 import shutil
 
 ALBUM_ART_FILE_NAME = 'front.jpeg'
-VERBOSITY = 3
+ERROR_FILE_PATH = '/tmp/errors.txt'
+NO_ALBUM_ART_FILE_PATH = '/tmp/no_album_art.txt'
+PERSIST_ERRORS_FILE_PATH = '/tmp/persistent.txt'
+
+logger = None
 
 def check_errors( data, artist, album ):
-    return data['album_artist_name'].lower() != artist.lower() or data['album_title'].lower() != album.lower()
+    got_artist = data['album_artist_name']
+    got_album  = data['album_title']
 
-def check_metadata( client_id, user_id, path, errors=[], fix_errors=False ):
+    if artist.lower() != got_artist.lower():
+        logger.warning( 'data mismatch (expected `%s` got `%s`)' % (artist, got_artist) )
+        return True
+    if album.lower() != got_album.lower():
+        logger.warning( 'data mismatch (expected `%s` got `%s`)' % (album, got_album) )
+        return True
+    return False
+
+def check_metadata( client_id, user_id, path, fix_errors=False ):
     for root, dirs, files in os.walk(path):
 
         save_changes = True
@@ -31,18 +44,18 @@ def check_metadata( client_id, user_id, path, errors=[], fix_errors=False ):
             artist = os.path.basename(os.path.dirname(root))
             album  = os.path.basename(root)
             album_path = os.path.join( path, album )
-            log( ' - %s' % album, 'WARNING' )
+            print( ' - %s' % album  )
 
             data = pygn.search( clientID=client_id, userID=user_id, artist=artist, album=album )
 
-            log( json.dumps(data, indent=3 ), 'DEBUG' )
+            logger.debug( json.dumps(data, indent=3 ) )
 
             if check_errors( data, artist, album ):
                 if fix_errors:
                     resolve_errors( data, artist, album )
                 else:
-                    log( ' >>ERROR', 'INFO' )
-                    errors.append( path )
+                    with open( ERROR_FILE_PATH, 'a' ) as f:
+                        f.write( '%s\n' % album_path )
                     save_changes = False
 
             if save_changes:
@@ -52,7 +65,7 @@ def check_metadata( client_id, user_id, path, errors=[], fix_errors=False ):
 
         else: # artist
             artist  = os.path.basename(root)
-            log( '\n%s' % artist, 'WARNING' )
+            print( '\n%s' % artist )
 
 def download_album_art( album_path, url ):
     global ALBUM_ART_FILE_NAME
@@ -67,7 +80,9 @@ def download_album_art( album_path, url ):
                 shutil.copyfileobj( res.raw, f )
             return
 
-    log( '    unable to download album art', 'INFO' )
+    logger.warning( 'unable to download album art' )
+    with open( NO_ALBUM_ART_FILE_PATH, 'a' ) as f:
+        f.write( '%s\n' % album_path )
 
 def get_genre( data ):
     genre = ''
@@ -75,30 +90,18 @@ def get_genre( data ):
         genre += data['genre'][genre_item]['TEXT'] + '; '
     return genre[:-2]
 
-def log( msg, level_string='INFO' ):
-
-    level_strings = ['CRITICAL','ERROR','WARNING','INFO','DEBUG']
-
-    level = level_strings.index(level_string) if level_string in level_strings else 5
-    if level > VERBOSITY:
-        return
-    elif level < 2:
-        print( '%s: %s' % (level_string, msg) )
-    else:
-        print( msg )
-
 def resolve_error( data, field ):
     data_field = 'album_artist_name' if field=='ARTIST' else 'album_title'
     res = input( 'change %s (to `%s`)? ' % (field, data[data_field]) )
 
     if res == '':
-        log( 'changed %s to `%s`' % (field, data[data_field]), 'DEBUG' )
+        logger.debug( 'changed %s to `%s`' % (field, data[data_field]) )
         return True
     elif res == '/':
-        log( 'skipping...', 'DEBUG' )
+        logger.debug( 'skipping...' )
         return None
     else:
-        log( 'changed %s to `%s`' % (field, res), 'DEBUG' )
+        logger.debug( 'changed %s to `%s`' % (field, res) )
         data[data_field] = res
         return True
 
@@ -140,6 +143,8 @@ def update_metadata( album_path, file_name, data ):
         album_art_data = open( album_art_path, 'rb' ).read()
         file_data.images.set(3, album_art_data, 'image/jpeg')
 
+    for i in [file_data.artist, file_data.album_artist, file_data.album, file_data.original_release_date, file_data.genre, file_data.images]:
+        pass#print(i)
     try:
         file_data.save()
     except (eyed3.id3.tag.TagException, NotImplementedError):
@@ -148,37 +153,47 @@ def update_metadata( album_path, file_name, data ):
 def validate_path(path, require_valid=False):
     if os.path.exists( path ):
         return path
-    log( 'unable to resolve path: %s' % path, 'ERROR' )
+    logger.error( 'unable to resolve path: %s' % path )
     if require_valid:
         exit(1)
 
 def main():
+    global logger
 
     parser = argparse.ArgumentParser()
     parser.add_argument( '-a', '--artists', default='artists.txt', help='newline-separated line of artists to be evaluated (default=`artists.txt`)' )
+    parser.add_argument( '-e', '--errors', action='store_true', help='run only on directories saved to the error file' )
+    parser.add_argument( '-E', '--end', default='', help='run only for artists alphabetically at or before this value' )
     parser.add_argument( '-g', '--gnid', default='2016435791-02CA61403E3EB62723584D41E59C8455', help='gracenote client id' )
     parser.add_argument( '-q', '--quiet', action='store_true' )
+    parser.add_argument( '-R', '--only-missing-artwork', action='store_true', help='run only for albums in the no-album-art file' )
     parser.add_argument( '-s', '--source', default='/Volumes/ /music/iTunes/iTunes Music/Music', help='path to music library' )
+    parser.add_argument( '-S', '--start', default='', help='run only for artists alphabetically at or after this value')
     parser.add_argument( '-v', '--verbose', action='count', default=2 )
     args = parser.parse_args()
 
-    set_verbosity( args )
+    level = [ logging.DEBUG,logging.INFO,logging.WARNING,logging.ERROR,logging.CRITICAL ][ 4 if args.quiet else max(4-args.verbose,0) ]
+    logger = logging.getLogger(__name__)
+    logger.setLevel( level )
 
     eyed3.log.setLevel(logging.ERROR)
     user_id = pygn.register( args.gnid )
     src = validate_path( args.source, require_valid=True )
 
-    errors = []
+    if args.errors == False:
+        with open( args.artists ) as f:
+            for artist in f.readlines():
 
-    with open( args.artists ) as f:
-        for artist in f.readlines():
+                if artist >= args.start and (artist <= args.end or args.end == ''):
+                    artist_src_dir = validate_path( os.path.join( src, artist.strip() ) )
+                    check_metadata( args.gnid, user_id, artist_src_dir, fix_errors=False )
 
-            artist_src_dir = validate_path( os.path.join( src, artist.strip() ) )
-            check_metadata( args.gnid, user_id, artist_src_dir, errors=errors, fix_errors=False )
-
-    if len(errors):
-        log( '\n-----------\nRESOLVE ERRORS: enter `/` to skip, `` to accept changes, or new value', 'CRITICAL' )
-    for err_path in errors:
-        check_metadata( args.gnid, user_id, err_path, errors=[], fix_errors=True )
+    if os.path.exists( ERROR_FILE_PATH ):
+        with open( ERROR_FILE_PATH ) as f:
+            errors = [line.strip() for line in f.readlines()]
+            if len(errors):
+                print( '\n-----------\nRESOLVE ERRORS: enter `/` to skip, `` to accept changes, or new value' )
+            for err_path in errors:
+                check_metadata( args.gnid, user_id, err_path, fix_errors=True )
 
 main()
