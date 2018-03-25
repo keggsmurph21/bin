@@ -173,8 +173,6 @@ def main():
     with open( args.artists ) as f:
         for artist in f.readlines():
 
-            if artist != 'Das Racist\n':
-                continue
             artist_src_dir = validate_path( os.path.join( src, artist.strip() ) )
             check_metadata( args.gnid, user_id, artist_src_dir, errors=errors, fix_errors=False )
 
