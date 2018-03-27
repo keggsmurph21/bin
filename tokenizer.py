@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-# -*- encoding:utf-8 -*-
 '''
+tokenizer.py
+
 Kevin Murphy
 March 26, 2018
 
@@ -9,6 +10,8 @@ a basic CoNLLU format (no tags or dependencies specified).
 '''
 
 import argparse, os, re
+
+__all__ = [ 'tokenize' ]
 
 def tokenize( infile, outfile='out.conllu' ):
 
