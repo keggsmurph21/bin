@@ -9,30 +9,27 @@ Takes an input file with sentences delimited by newlines and converts it into
 a basic CoNLLU format (no tags or dependencies specified).
 '''
 
-import argparse, os, re
+import re
+import sys
 
 __all__ = [ 'tokenize' ]
 
-def tokenize( infile, outfile='out.conllu' ):
+def tokenize( f_in=sys.stdin, f_out=sys.stdout ):
+    '''
+    @param f_in		file-like object to read from
+    @param f_out	file-like object to write to
+    '''
 
-    # make sure it exists
-    if os.path.exists( infile ) == False:
-        print( 'ERROR: unable to locate file `%s`' % infile )
-        exit(1)
-
-    # open infile & outfile
-    with open( infile, 'r' ) as f_in, open( outfile, 'w' ) as f_out:
-
+    if True:
         # doc metadata
-        f_out.write( '# newdoc id = km_tokenizer_doc_%s\n' % infile )
+        f_out.write( '# newdoc id = km_tokenizer_doc\n' )
 
         # for each sentence
         lines = [ line.strip() for line in f_in.readlines() ]
         for li, line in enumerate(lines):
 
             # write the sentence-level metadata
-            f_out.write( '# sentence_id = km_tokenizer_doc_%s_sentence_%d\n' %
-                (infile, li+1) )
+            f_out.write( '# sentence_id = km_tokenizer_sentence_%d\n' % (li+1) )
             f_out.write( '# text = %s\n' % line )
 
             # separate out punctuation
@@ -52,15 +49,6 @@ def tokenize( infile, outfile='out.conllu' ):
 
             f_out.write( '\n' )
 
-def main():
-
-    # get input file
-    parser = argparse.ArgumentParser()
-    parser.add_argument( 'input' )
-    args = parser.parse_args()
-
-    # do the work
-    tokenize( infile=args.input )
-
 if __name__ == '__main__':
-    main()
+    tokenize()
+
