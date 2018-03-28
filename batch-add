@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # Reads a list of database tables from stdin
 # and generates SQL commands to be run to add a
