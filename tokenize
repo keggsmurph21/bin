@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+'''
+tokenizer.py
+
+Kevin Murphy
+March 26, 2018
+
+Takes an input file with sentences delimited by newlines and converts it into
+a basic CoNLLU format (no tags or dependencies specified).
+'''
+
+import argparse, re, sys
+
+__all__ = [ 'tokenize' ]
+
+def tokenize(f_in=sys.stdin, f_out=sys.stdout):
+    '''
+    @param f_in		open file-like object to read from
+    @param f_out	open file-like object to write to
+    '''
+
+    # for each sentence
+    lines = [ line.strip() for line in f_in.readlines() ]
+    for li, line in enumerate(lines):
+
+        # doc metadata on first line
+        if not(li):
+            f_out.write('# newdoc id = km_tokenizer_doc\n')
+
+        # write the sentence-level metadata
+        f_out.write('# sentence_id = km_tokenizer_sentence_%d\n' % (li+1))
+        f_out.write('# text = %s\n' % line)
+
+        # separate out punctuation
+        line = re.sub(r'([.,;()])', r' \1 ', line)
+        # delete redundant spaces
+        line = re.sub(r'[ ]+', r' ', line)
+
+        # split into lemmas
+        lemmas = [lemma for lemma in line.split(' ') if len(lemma)]
+
+        # conllu dependency skeleton
+        skeleton = '\t'.join(['_' for i in range(8)])
+
+        # write lemmas
+        for le, lemma in enumerate(lemmas):
+            f_out.write('%d\t%s\t%s\n' % (le+1, lemma, skeleton))
+
+        # padding
+        f_out.write('\n')
+
+def main():
+
+    # note: defaults assume UNIX-like architecture (i.e. not DOS-like)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', default='/dev/stdin', help='path to input file (default=stdin)')
+    parser.add_argument('-o', default='/dev/stdout', help='path to output file (default=stdout)')
+    args = parser.parse_args()
+
+    # open the input/output files
+    args.i = open( args.i, 'r' ) # throws OSError if invalid path
+    args.o = open( args.o, 'w' )
+
+    # tokenize away!
+    tokenize(f_in=args.i, f_out=args.o)
+
+if __name__ == '__main__':
+    main()
