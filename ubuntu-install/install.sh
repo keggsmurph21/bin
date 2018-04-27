@@ -10,8 +10,9 @@ path=/media/ubuntu/KEVIN/ubuntu-install
 sudo mv /etc/apt/sources.list /etc/apt/sources.list.backup
 sudo cp "${path}/sources.list" /etc/apt/sources.list
 sudo apt update
-sudo apt install -y vim git curl htop hexchat
+sudo apt install -y vim git curl htop hexchat cmatrix
 cd ~
+ln -s $path ubuntu-install
 
 # node
 curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
