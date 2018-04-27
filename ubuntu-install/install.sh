@@ -6,9 +6,9 @@ path=/media/ubuntu/KEVIN/etc/ubuntu-install
 # basic stuff
 sudo mv /etc/apt/sources.list /etc/apt/sources.list.backup
 sudo cp "${path}/sources.list" /etc/apt/sources.list
-sudo add-apt-repository -y ppa:videolan/stable-daily ppa:webupd8team/atom
+sudo add-apt-repository -y ppa:videolan/stable-daily ppa:webupd8team/atom 
 sudo apt update
-sudo apt install -y vim git curl htop hexchat atom cmatrix
+sudo apt install -y vim git curl htop hexchat cmatrix
 cd ~
 ln -s $path ubuntu-install
 
@@ -53,6 +53,12 @@ gsettings set "${CKB_PATH}/custom2/" command 'amixer set Master playback 3dB+'
 
 gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
 
+# catonline things
+# curl -fsSL https://downloads.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# sudo apt install -y docker docker-compose apt-transport-https ca-certificates software-properties-common docker-ce
+git clone https://github.com/keggsmurph21/catonline
+cp "${path}/catonline-env" catonline/.env
+	
 # upgrade key utilities
 sudo apt install firefox
 
