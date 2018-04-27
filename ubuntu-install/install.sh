@@ -51,6 +51,8 @@ gsettings set "${CKB_PATH}/custom2/" name 'custom-incr-vol'
 gsettings set "${CKB_PATH}/custom2/" binding 'F12'
 gsettings set "${CKB_PATH}/custom2/" command 'amixer set Master playback 3dB+'
 
+gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
+
 # upgrade key utilities
 sudo apt install firefox
 
