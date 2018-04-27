@@ -6,8 +6,9 @@ path=/media/ubuntu/KEVIN/etc/ubuntu-install
 # basic stuff
 sudo mv /etc/apt/sources.list /etc/apt/sources.list.backup
 sudo cp "${path}/sources.list" /etc/apt/sources.list
+sudo add-apt-repository -y ppa:videolan/stable-daily ppa:webupd8team/atom
 sudo apt update
-sudo apt install -y vim git curl htop hexchat cmatrix
+sudo apt install -y vim git curl htop hexchat atom cmatrix
 cd ~
 ln -s $path ubuntu-install
 
@@ -30,7 +31,6 @@ cp -r "${path}/hexchat" ~/.config/hexchat
 hexchat &
 
 # set up g-drive/music stuff
-sudo add-apt-repository -y ppa:videolan/stable-daily
 sudo apt install -y lame vlc
 ln -s /media/ubuntu/b72752d1-28de-39d6-8156-5fa5eff84df2/music/iTunes/iTunes\ Music/Music/ library
 sudo cp "${path}/vplay" /usr/local/bin
