@@ -1,7 +1,4 @@
-# since this is on an external drive, can't just give it +x permissions
-# so run it like this:
-# 
-# $ cat install.sh | sudo sh
+# to use: $ sh /path/to/install.sh
 
 # points to the directory containing install files
 path=/media/ubuntu/KEVIN/ubuntu-install
@@ -53,4 +50,7 @@ gsettings set "${CKB_PATH}/custom1/" command 'amixer set Master playback 3dB-'
 gsettings set "${CKB_PATH}/custom2/" name 'custom-incr-vol'
 gsettings set "${CKB_PATH}/custom2/" binding 'F12'
 gsettings set "${CKB_PATH}/custom2/" command 'amixer set Master playback 3dB+'
+
+# upgrade key utilities
+sudo apt install firefox
 
