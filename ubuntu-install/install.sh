@@ -7,7 +7,7 @@
 sudo apt update
 mv /etc/apt/sources.list /etc/apt/sources.list.backup
 cp /media/ubuntu/KEVIN/sources.list /etc/apt/sources.list
-sudo apt install -y vim git curl htop
+sudo apt install -y vim git curl htop hexchat
 
 # node
 curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
@@ -27,6 +27,9 @@ sudo chmod 777 etc
 #chmod 777 catonline
 #git clone https://github.com/keggsmurph21/etc
 #chmod 777 etc
+
+# hexchat config
+cp -r hexchat ~/.config/hexchat
 
 # set up g-drive/music stuff
 sudo add-apt-repository -y ppa:videolan/stable-daily

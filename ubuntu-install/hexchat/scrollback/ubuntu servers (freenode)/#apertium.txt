@@ -1,0 +1,7 @@
+T 1524854498 19*	Now talking on 22#apertium
+T 1524854498 22*	Topic for 22#apertium is:  Apertium - Free software machine translation - http://wiki.apertium.org/ - https://github.com/apertium/ - [ðɪs] channel is multilingual, use UTF-8 (xchat: /charset UTF-8) - Pastebin: http://apertium.codepad.org/ - if you have a question, ask! || GSOC mentors are voiced.
+T 1524854498 22*	Topic for 22#apertium set by 26spectie!~fran@unaffiliated/spectie (24Thu Mar  8 10:27:24 2018)
+T 1524854662 19*	Now talking on 22#apertium
+T 1524854662 22*	Topic for 22#apertium is:  Apertium - Free software machine translation - http://wiki.apertium.org/ - https://github.com/apertium/ - [ðɪs] channel is multilingual, use UTF-8 (xchat: /charset UTF-8) - Pastebin: http://apertium.codepad.org/ - if you have a question, ask! || GSOC mentors are voiced.
+T 1524854662 22*	Topic for 22#apertium set by 26spectie!~fran@unaffiliated/spectie (24Thu Mar  8 10:27:24 2018)
+T 1524854720 Python interface unloaded
