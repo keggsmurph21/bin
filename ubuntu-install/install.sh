@@ -1,7 +1,7 @@
 # to use: $ sh /path/to/install.sh
 
 # points to the directory containing install files
-path=/media/ubuntu/KEVIN/ubuntu-install
+path=/media/ubuntu/KEVIN/etc/ubuntu-install
 
 # basic stuff
 sudo mv /etc/apt/sources.list /etc/apt/sources.list.backup
