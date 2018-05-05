@@ -1,0 +1,3 @@
+#!/bin/sh
+
+vlc "$1" #2>/dev/null
