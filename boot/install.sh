@@ -51,7 +51,7 @@ alias inet=\"ip address | grep inet\"
 alias vu=\"amixer sset Master 5%+ > /dev/null\"
 alias vd=\"amixer sset Master 5%- > /dev/null\"
 alias vm=\"amixer sset Master 0% > /dev/null\"
-alias la=\"ls -a\"
+alias ls=\"ls -a\"
 " >> ~/.bashrc
 . ~/.bashrc
 
@@ -72,7 +72,7 @@ if [ $XDG_CURRENT_DESKTOP=XFCE ]; then
 	cp xfce4-panel.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/
 	pkill -KILL -u $(whoami)
 
-elif [ pgrep -f gnome ]; then
+elif [ ! pgrep -f gnome ]; then # not sure if need the ! or not ..?
 
 	# set up some gnome keyboard bindings
 	KB=org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings
