@@ -13,5 +13,6 @@ wget $URL/vplay.sh
 . install.sh
 
 # clean up
-rm ../strap.sh
+cd ..
+rm strap.sh
 
