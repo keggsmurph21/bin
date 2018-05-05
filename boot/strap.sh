@@ -12,3 +12,6 @@ wget $URL/vplay.sh
 # do the install
 . install.sh
 
+# clean up
+rm ../strap.sh
+
