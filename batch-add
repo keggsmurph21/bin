@@ -18,7 +18,7 @@
 # > paste "SHOW TABLES;" into the query box
 # > press GO
 # > copy the list of tables to file (e.g. `/tmp/tables.txt`)
-# > run $ cat /tmp/tables.txt | ./add-user-to-all-tables my_username my_password_hash my_admin_flag > ./out.txt
+# > run $ cat /tmp/tables.txt | ./batch-add my_username my_password_hash my_admin_flag > ./out.txt
 # > open SQL tab (on phpMyAdmin)
 # > copy the contents of ./out.txt to the textbox
 # > press GO

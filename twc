@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# twc (TeX word count)
+# Kevin Murphy
+# 4 May 2018
+#
+# counts the words occuring b/w $start and $stop in a text file
+# useful for counting words in a .tex file, for example (.tex comments
+# begin with "%")
+
+filter=off
+start="%start"
+stop="%stop"
+
+echo counting words in \"$1\" between \"$start\" and \"$stop\" ... > /dev/stderr
+cat $1 | while read -r line
+do
+
+  if [ $filter = on ]; then
+    if [ $(echo $line | grep $stop) ]; then
+      filter=off
+    else
+      echo $line
+    fi
+  else
+    if [ $(echo $line | grep $start) ]; then
+      filter=on
+    fi
+  fi
+
+done | wc -w
