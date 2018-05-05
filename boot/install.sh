@@ -11,19 +11,22 @@ elif uname -a | grep ubuntu 1>/dev/null; then
 fi
 
 BASE=/media/$(whoami)/live-rw
+if [ ! -d $BASE ]; then
+	mkdir ~/
+	$BASE=~/boot
+else
+	ln -s $BASE/git/etc/boot $BASE/boot
+	ln -s $BASE ~/persistent
+fi
 GDRIVE=/media/$(whoami)/gdrive
 
 # make directories
 sudo mkdir $GDRIVE
 
 # make some links
-ln -s $BASE/git/etc/boot $BASE/boot
-ln -s $BASE ~/persistent
 ln -s "$GDRIVE/music/iTunes/iTunes Music/Music/" ~/library
 
 # copy some files
-sudo cp $BASE/boot/sources.list /etc/apt/sources.list
-cp $BASE/boot/vplay /usr/local/bin
 
 # basic apt tools
 sudo apt update
