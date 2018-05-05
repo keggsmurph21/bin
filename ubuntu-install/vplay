@@ -1,3 +1,0 @@
-#!/bin/sh
-
-vlc --global-key-prev 'F7' --global-key-play-pause 'F8' --global-key-next 'F9' "$1" 2>/dev/null

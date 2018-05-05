@@ -1,5 +1,0 @@
-deb cdrom:[Ubuntu 17.10 _Artful Aardvark_ - Release amd64 (20180105.1)]/ artful main restricted
-deb http://archive.ubuntu.com/ubuntu/ artful main restricted universe multiverse
-deb http://security.ubuntu.com/ubuntu/ artful-security main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu/ artful-updates main restricted universe multiverse
-
