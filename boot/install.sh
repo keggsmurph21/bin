@@ -14,9 +14,8 @@ fi
 BASE=/media/$(whoami)/live-rw
 if [ ! -d $BASE ]; then
 	# if we're here, we installed from boot/strap.sh
-	BASE=~/boot
+	BASE=~
 else
-	ln -s $BASE/git/etc/boot $BASE/boot
 	ln -s $BASE ~/persistent
 fi
 
@@ -64,4 +63,9 @@ sudo apt autoremove
 git config --global credential.helper cache
 git config --global user.email "keggsmurph21@gmail.com"
 git config --global user.name "Kevin Murphy"
+
+if [ $XDG_CURRENT_DESKTOP=XFCE ]; then
+	cp xfce4-panel.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/
+	pkill -KILL -u $(whoami)
+fi
 
