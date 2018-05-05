@@ -17,6 +17,7 @@ GDRIVE=/media/$(whoami)/gdrive
 sudo mkdir $GDRIVE
 
 # make some links
+ln -s $BASE/git/etc/boot $BASE/boot
 ln -s $BASE ~/persistent
 ln -s "$GDRIVE/music/iTunes/iTunes Music/Music/" ~/library
 
@@ -41,6 +42,7 @@ curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt install -y npm
 
 # git stuff
-cd $BASE/git
-git clone https://github.com/keggsmurph21/etc
-git clone https://github.com/
+git config --global credential.helper cache
+git config --global user.email "keggsmurph21@gmail.com"
+git config --global user.name "Kevin Murphy"
+
