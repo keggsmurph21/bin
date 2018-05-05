@@ -13,7 +13,7 @@ fi
 BASE=/media/$(whoami)/live-rw
 if [ ! -d $BASE ]; then
 	# if we're here, we installed from boot/strap.sh
-	$BASE=~/boot
+	BASE=~/boot
 else
 	ln -s $BASE/git/etc/boot $BASE/boot
 	ln -s $BASE ~/persistent
@@ -40,7 +40,8 @@ else
 	wget -O - http://download.videolan.org/pub/debian/videolan-apt.asc | sudo apt-key add -
 fi
 sudo apt update
-sudo apt install -y curl git htop gparted python3 nodejs curl telnet hexchat vim libdvdcss2
+sudo apt install -y curl git htop gparted python3 nodejs curl telnet hexchat vim libdvdcss2 python-pip
+pip install --upgrade pip
 
 # alias some stuff
 echo "
@@ -49,10 +50,12 @@ alias node=nodejs
 alias python=python3
 alias vplay=$BASE/boot/vplay.sh
 alias inet=\"ip address | grep inet\"
-alias vu=\"amixer sset Master 5%+\"
-alias vd=\"amixer sset Master 5%-\"
-alias vm=\"amixer sset Master 0%\"
+alias vu=\"amixer sset Master 5%+ 1>/dev/null\"
+alias vd=\"amixer sset Master 5%- 1>/dev/null\"
+alias vm=\"amixer sset Master 0% 1>/dev/null\"i
+alias la="ls -a"
 " >> ~/.bashrc
+. ~/.bashrc
 
 # more apt
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
