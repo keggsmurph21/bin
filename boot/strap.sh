@@ -9,3 +9,6 @@ cd ~/boot
 wget $URL/install.sh
 wget $URL/vplay.sh
 
+# do the install
+. install.sh
+

@@ -12,7 +12,7 @@ fi
 
 BASE=/media/$(whoami)/live-rw
 if [ ! -d $BASE ]; then
-	mkdir ~/
+	# if we're here, we installed from boot/strap.sh
 	$BASE=~/boot
 else
 	ln -s $BASE/git/etc/boot $BASE/boot
@@ -29,8 +29,11 @@ ln -s "$GDRIVE/music/iTunes/iTunes Music/Music/" ~/library
 # copy some files
 
 # basic apt tools
+if [ $OS=ubuntu ]; then
+	sudo add-apt-repository universe
+fi
 sudo apt update
-sudo apt install -y git htop gparted python3 nodejs curl telnet hexchat vim
+sudo apt install -y curl git htop gparted python3 nodejs curl telnet hexchat vim
 
 # alias some stuff
 echo "
