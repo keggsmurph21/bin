@@ -38,7 +38,7 @@ wget -O - http://download.videolan.org/pub/$OS/videolan-apt.asc | sudo apt-key a
 sudo apt update
 
 # install stuff
-sudo apt install -y curl git htop gparted python3 nodejs curl telnet hexchat vim libdvdcss2 python-pip tree cmatrix lame firefox
+sudo apt install -y curl git htop gparted python3 nodejs curl telnet hexchat vim libdvdcss2 python-pip tree cmatrix lame
 pip install --upgrade pip
 
 # alias some stuff
@@ -58,7 +58,7 @@ alias ls=\"ls -a\"
 # more apt
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt install -y npm
-sudo apt autoremove
+sudo apt -y autoremove
 
 # git stuff
 git config --global credential.helper cache
