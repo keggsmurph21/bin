@@ -1,0 +1,7 @@
+#!/bin/sh
+
+extensions="*.aux *.log *.gz"
+
+echo "Removing files: $extensions"
+rm $extensions 2>/dev/null
+
