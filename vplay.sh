@@ -1,0 +1,1 @@
+installers/live/scripts/vplay.sh

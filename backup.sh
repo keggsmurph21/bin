@@ -1,7 +1,7 @@
 #!/bin/sh -ex
 
 timestamp() {
-  date +%Y-%m-%d_%H-%M-%S
+  date +%Y%m%d-%H%M%S
 }
 
 BACKUPDIR="/Volumes/ /backups"
@@ -27,3 +27,5 @@ npm ls -g --depth=0 | sudo tee npm.txt > /dev/null
 cargo install --list | sudo tee cargo.txt > /dev/null
 gem list | sudo tee gem.txt > /dev/null
 port installed | sudo tee port.txt > /dev/null
+
+# other stuff?
