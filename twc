@@ -11,6 +11,7 @@
 filter=off
 start="%start"
 stop="%stop"
+ignore="%"
 
 echo counting words in \"$1\" between \"$start\" and \"$stop\" ... > /dev/stderr
 cat $1 | while read -r line
@@ -20,7 +21,7 @@ do
     if [ $(echo $line | grep $stop) ]; then
       filter=off
     else
-      echo $line
+      echo $line | perl -ne "print $_ if ! /^\W*$ignore/"
     fi
   else
     if [ $(echo $line | grep $start) ]; then
