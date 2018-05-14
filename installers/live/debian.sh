@@ -10,6 +10,9 @@ elif uname -a | grep ubuntu 1>/dev/null; then
 	OS=ubuntu
 fi
 
+echo $OS;
+exit;
+
 # make sure we have a constistent base path
 BASE=/media/$(whoami)/live-rw
 if [ ! -d $BASE ]; then
@@ -69,8 +72,8 @@ git config --global user.name "Kevin Murphy"
 if [ $XDG_CURRENT_DESKTOP=XFCE ]; then
 
 	# make our panel look nice :)
-	cp xfce4-panel.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/
-	pkill -KILL -u $(whoami)
+	#cp xfce4-panel.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/
+	#pkill -KILL -u $(whoami)
 
 elif [ ! pgrep -f gnome ]; then # not sure if need the ! or not ..?
 
