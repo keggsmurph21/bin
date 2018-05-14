@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -ex
 
 # install script for Debian-based systems
 
@@ -11,27 +11,28 @@ elif uname -a | grep ubuntu 1>/dev/null; then
 fi
 
 # make sure we have a constistent base path
-#BASE=/media/$(whoami)/live-rw
+BASE=/media/$(whoami)/live-rw
 if [ ! -d $BASE ]; then
 	# if we're here, we installed from boot/strap.sh
 	BASE=~
 else
-	echo pass #ln -s $BASE ~/persistent
+	ln -s $BASE ~/persistent
 fi
 
 # set up external drive
-#GDRIVE=/media/$(whoami)/gdrive
-#sudo mkdir $GDRIVE
-#echo "UUID=b72752d1-28de-39d6-8156-5fa5eff84df2 $GDRIVE hfsplus ro 0 0" | sudo tee -a /etc/fstab > /dev/null
-#ln -s "$GDRIVE/music/iTunes/iTunes Music/Music/" ~/library
+GDRIVE=/media/$(whoami)/gdrive
+sudo mkdir $GDRIVE
+echo "UUID=b72752d1-28de-39d6-8156-5fa5eff84df2 $GDRIVE hfsplus ro 0 0" | sudo tee -a /etc/fstab > /dev/null
+ln -s "$GDRIVE/music/iTunes/iTunes Music/Music/" ~/library
 
 # basic apt tools
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+sudo apt update
+sudo apt install apt-transport-https
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee -a /etc/apt/sources.list > /dev/null
 if [ "$OS" = "ubuntu" ]; then
 	sudo add-apt-repository universe
-	sudo add-apt-repository ppa:webupd8team/sublime-text-3
-elif [ "$OS" = "debian" ]; then
-	wget -q0 - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-	echo "deb https://download.sublimetext.com/ apt/stable" | sudo tee -a /etc/apt/sources.list > /dev/null
+#elif [ "$OS" = "debian" ]; then
 fi
 
 echo "
