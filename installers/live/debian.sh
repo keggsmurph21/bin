@@ -46,6 +46,8 @@ sudo apt update
 sudo apt install -y curl git htop gparted python3 nodejs curl telnet hexchat vim libdvdcss2 python-pip tree cmatrix lame sublime-text
 pip install --upgrade pip
 sudo cp $BASE/boot/scripts/vplay.sh /usr/local/bin/vplay
+mkdir -p ~/.config/hexchat
+sudo cp $BASE/boot/config/hexchat.conf ~/.config/hexchat/
 
 # alias some stuff
 echo "
@@ -98,3 +100,5 @@ if [ ! pgrep -f gnome ]; then # not sure if need the ! or not ..?
 	gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/','/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
 
 fi
+
+hexchat &

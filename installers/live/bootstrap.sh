@@ -15,10 +15,11 @@ fi
 
 # get the install files
 URL=https://raw.githubusercontent.com/keggsmurph21/etc/master/installers/live
-mkdir ~/boot
+mkdir -p ~/boot/config
 cd ~/boot
 wget -O - $URL/$1.sh > $1.sh 2> /dev/null
 wget -O - $URL/scripts/vplay.sh | sudo tee /usr/local/bin/vplay > /dev/null
+wget -O - $URL/config/hexchat.conf > config/hexchat.conf
 sudo chmod 0755 $1.sh /usr/local/bin/vplay
 
 # do the install
