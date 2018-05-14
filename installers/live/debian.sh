@@ -45,13 +45,13 @@ sudo apt update
 # install stuff
 sudo apt install -y curl git htop gparted python3 nodejs curl telnet hexchat vim libdvdcss2 python-pip tree cmatrix lame sublime-text
 pip install --upgrade pip
+sudo cp $BASE/boot/scripts/vplay.sh /usr/local/bin/vplay
 
 # alias some stuff
 echo "
 # CUSTOM STUFF
 alias node=nodejs
 alias python=python3
-alias vplay=$BASE/boot/vplay.sh
 alias inet=\"ip address | grep inet\"
 alias vu=\"amixer sset Master 5%+ > /dev/null\"
 alias vd=\"amixer sset Master 5%- > /dev/null\"
@@ -77,6 +77,7 @@ git config --global user.name "Kevin Murphy"
 	#cp xfce4-panel.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/
 	#pkill -KILL -u $(whoami)
 
+exit
 if [ ! pgrep -f gnome ]; then # not sure if need the ! or not ..?
 
 	# set up some gnome keyboard bindings
