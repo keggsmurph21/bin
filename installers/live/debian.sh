@@ -10,27 +10,28 @@ elif uname -a | grep ubuntu 1>/dev/null; then
 	OS=ubuntu
 fi
 
-echo $OS;
-exit;
-
 # make sure we have a constistent base path
-BASE=/media/$(whoami)/live-rw
+#BASE=/media/$(whoami)/live-rw
 if [ ! -d $BASE ]; then
 	# if we're here, we installed from boot/strap.sh
 	BASE=~
 else
-	ln -s $BASE ~/persistent
+	echo pass #ln -s $BASE ~/persistent
 fi
 
 # set up external drive
-GDRIVE=/media/$(whoami)/gdrive
-sudo mkdir $GDRIVE
-echo "UUID=b72752d1-28de-39d6-8156-5fa5eff84df2 $GDRIVE hfsplus ro 0 0" | sudo tee -a /etc/fstab > /dev/null
-ln -s "$GDRIVE/music/iTunes/iTunes Music/Music/" ~/library
+#GDRIVE=/media/$(whoami)/gdrive
+#sudo mkdir $GDRIVE
+#echo "UUID=b72752d1-28de-39d6-8156-5fa5eff84df2 $GDRIVE hfsplus ro 0 0" | sudo tee -a /etc/fstab > /dev/null
+#ln -s "$GDRIVE/music/iTunes/iTunes Music/Music/" ~/library
 
 # basic apt tools
-if [ $OS=ubuntu ]; then
+if [ "$OS" = "ubuntu" ]; then
 	sudo add-apt-repository universe
+	sudo add-apt-repository ppa:webupd8team/sublime-text-3
+elif [ "$OS" = "debian" ]; then
+	wget -q0 - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+	echo "deb https://download.sublimetext.com/ apt/stable" | sudo tee -a /etc/apt/sources.list > /dev/null
 fi
 
 echo "
@@ -41,7 +42,7 @@ wget -O - http://download.videolan.org/pub/$OS/videolan-apt.asc | sudo apt-key a
 sudo apt update
 
 # install stuff
-sudo apt install -y curl git htop gparted python3 nodejs curl telnet hexchat vim libdvdcss2 python-pip tree cmatrix lame
+sudo apt install -y curl git htop gparted python3 nodejs curl telnet hexchat vim libdvdcss2 python-pip tree cmatrix lame sublime-text
 pip install --upgrade pip
 
 # alias some stuff
@@ -69,7 +70,7 @@ git config --global user.email "keggsmurph21@gmail.com"
 git config --global user.name "Kevin Murphy"
 
 # desktop setup
-if [ $XDG_CURRENT_DESKTOP=XFCE ]; then
+if [ "$XDG_CURRENT_DESKTOP" = "XFCE" ]; then
 
 	# make our panel look nice :)
 	#cp xfce4-panel.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/

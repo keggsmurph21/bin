@@ -19,14 +19,14 @@ fi
 URL=https://raw.githubusercontent.com/keggsmurph21/etc/master/installers/live
 mkdir ~/boot
 cd ~/boot
-wget -O - $URL/$1.sh > install.sh 2> /dev/null
-wget -O - $URL/vplay.sh > vplay.sh 2> /dev/null
+wget -O - $URL/$1.sh > $1.sh 2> /dev/null
+wget -O - $URL/scripts/vplay.sh | sudo tee /usr/local/bin/vplay > /dev/null
 sudo chmod 0755 install.sh vplay.sh
 
 # do the install
-. install.sh
+sh $1.sh
 
 # clean up
 cd ..
-rm strap.sh
+rm -rf boot
 
