@@ -1,6 +1,4 @@
-#!/bin/sh
-
-set -e 
+#!/bin/sh -ex
 
 usage() {
 	echo "unsupported distribution \"$1\", please choose one of (arch, debian, redhat)"
@@ -21,7 +19,7 @@ mkdir ~/boot
 cd ~/boot
 wget -O - $URL/$1.sh > $1.sh 2> /dev/null
 wget -O - $URL/scripts/vplay.sh | sudo tee /usr/local/bin/vplay > /dev/null
-sudo chmod 0755 install.sh vplay.sh
+sudo chmod 0755 $1.sh /usr/local/bin/vplay
 
 # do the install
 sh $1.sh

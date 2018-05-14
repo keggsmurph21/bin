@@ -71,13 +71,13 @@ git config --global user.email "keggsmurph21@gmail.com"
 git config --global user.name "Kevin Murphy"
 
 # desktop setup
-if [ "$XDG_CURRENT_DESKTOP" = "XFCE" ]; then
+#if [ "$XDG_CURRENT_DESKTOP" = "XFCE" ]; then
 
 	# make our panel look nice :)
 	#cp xfce4-panel.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/
 	#pkill -KILL -u $(whoami)
 
-elif [ ! pgrep -f gnome ]; then # not sure if need the ! or not ..?
+if [ ! pgrep -f gnome ]; then # not sure if need the ! or not ..?
 
 	# set up some gnome keyboard bindings
 	KB=org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings
