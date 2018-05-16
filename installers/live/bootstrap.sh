@@ -37,8 +37,8 @@ sudo chmod 755 config/*.sh desktops/*.sh scripts/*.sh
 
 # do the install
 echo "installing for distribution '$1'" >&2
-#bash $1.sh
+bash $1.sh
 
 # clean up
 cd ..
-#rm -rf boot
+rm -rf boot
