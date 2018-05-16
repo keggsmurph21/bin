@@ -50,16 +50,7 @@ mkdir -p ~/.config/hexchat
 sudo cp $BASE/boot/config/hexchat.conf ~/.config/hexchat/
 
 # alias some stuff
-echo "
-# CUSTOM STUFF
-alias node=nodejs
-alias python=python3
-alias inet=\"ip address | grep inet\"
-alias vu=\"amixer sset Master 5%+ > /dev/null\"
-alias vd=\"amixer sset Master 5%- > /dev/null\"
-alias vm=\"amixer sset Master 0% > /dev/null\"
-alias ls=\"ls -a\"
-" >> ~/.bashrc
+cat $BASE/config/.bashrc >> ~/.bashrc
 . ~/.bashrc
 
 # more apt
