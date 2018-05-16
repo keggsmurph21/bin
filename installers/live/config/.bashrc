@@ -4,6 +4,7 @@
 # system
 alias la="ls -aF"
 alias inet="ip address | grep inet"
+alias bashrc="vi ~/.bashrc && . ~/.bashrc"
 
 # volume control
 alias vu="amixer sset Master 5%+ > /dev/null"
@@ -30,7 +31,7 @@ alias gaa="git add -A"
 alias gau="git add -u"
 alias gc="git commit -m"
 alias gco="git checkout"
-alias gb="git checkout --branch"
+alias gb="git checkout -b"
 alias gp="git push"
 alias gpu="git push --set-upstream origin `git branch | grep \* | cut -d ' ' -f2`"
 
