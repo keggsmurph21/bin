@@ -1,0 +1,3 @@
+deb https://download.sublimetext.com/ apt/stable/
+deb http://download.videolan.org/pub/$OS/stable/ /
+deb-src http://download.videolan.org/pub/$OS/stable/ /
