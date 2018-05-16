@@ -15,6 +15,11 @@ alias node=nodejs
 alias python=python3
 
 # git
+git_add_commit_push() {
+  gau && gc "$@" && gp
+}
+
+alias "git!"=git_add_commit_push
 alias gs="git status"
 alias ga="git add"
 alias gaa="git add -A"
