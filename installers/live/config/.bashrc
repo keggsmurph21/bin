@@ -16,7 +16,11 @@ alias python=python3
 
 # git
 git_add_commit_push() {
-  gau && gc "$@" && gp
+  if [ -z "$1" ]; then
+    echo "git commit: Please enter a commit message" >&2
+    return 1
+  }
+  gau && gc "$1" && gp
 }
 
 alias "git!"=git_add_commit_push
