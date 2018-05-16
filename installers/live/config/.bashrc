@@ -2,7 +2,7 @@
 ## BEGIN CUSTOM ##
 
 # system
-alias la="ls -a"
+alias la="ls -aF"
 alias inet="ip address | grep inet"
 
 # volume control
