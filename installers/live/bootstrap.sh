@@ -1,18 +1,19 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
 usage() {
-	echo "unsupported distribution \"$1\", please choose one of (arch, debian, redhat)"
+	echo "unsupported distribution \"$1\", please choose one of (arch, debian, redhat)" >&2
 	exit 1
 }
 
 get_url() {
-	wget -O - https://raw.githubusercontent.com/keggsmurph21/etc/master/installers/live/$1 > $1
+	echo " - getting file '$1'" >&2
+	wget -qO - https://raw.githubusercontent.com/keggsmurph21/etc/master/installers/live/$1 > $1
 }
 
 if [ -z $1 ]; then
 	usage "<not set>"
 elif [ $1 = arch ] || [ $1 = debian ] || [ $1 = redhat ]; then
-	echo "bootstrapping installation for $1-based distribution"
+	echo "bootstrapping installation for distribution '$1'" >&2
 else
 	usage $1
 fi
@@ -35,8 +36,9 @@ get_url scripts/vplay.sh
 sudo chmod 755 config/*.sh desktops/*.sh scripts/*.sh
 
 # do the install
+echo "installing for distribution '$1'" >&2
 #bash $1.sh
 
 # clean up
 cd ..
-rm -rf boot
+#rm -rf boot
