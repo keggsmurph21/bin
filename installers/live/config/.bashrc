@@ -20,7 +20,7 @@ git_add_commit_push() {
   if [ -z "$1" ]; then
     echo "git commit: Please enter a commit message" >&2
     return 1
-  }
+  fi
   gau && gc "$1" && gp
 }
 

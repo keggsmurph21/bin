@@ -50,7 +50,7 @@ pip install --upgrade pip
 sudo cp $BASE/boot/scripts/vplay.sh /usr/local/bin/vplay
 mkdir -p ~/.config/hexchat
 sudo cp $BASE/boot/config/hexchat.conf ~/.config/hexchat/
-cat $BASE/config/.bashrc >> ~/.bashrc
+cat $BASE/boot/config/.bashrc >> ~/.bashrc
 . ~/.bashrc
 
 # git stuff
@@ -60,9 +60,9 @@ git config --global user.name "Kevin Murphy"
 
 # desktop setup
 if [ "$XDG_CURRENT_DESKTOP" = "XFCE" ]; then
-	bash $BASE/desktops/xfce.sh
+	bash $BASE/boot/desktops/xfce.sh
 elif [ ! pgrep -f gnome ]; then
-	bash $BASE/desktops/gnome.sh
+	bash $BASE/boot/desktops/gnome.sh
 else
 	echo "unrecognized desktop environment"
 	exit 1
