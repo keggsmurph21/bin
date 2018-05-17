@@ -31,10 +31,11 @@ ln -sf "$GDRIVE/music/iTunes/iTunes Music/Music/" ~/library
 
 # basic apt setup
 sudo apt update
+sudo apt install -y apt-transport-https
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 wget -qO - http://download.videolan.org/pub/$OS/videolan-apt.asc | sudo apt-key add -
-cat $BASE/config/sources.list | sudo tee -a /etc/apt/sources.list > /dev/null
-sudo -E bash $BASE/config/install-npm@10.sh  # also gets the apt-transport-https
+cat $BASE/boot/config/sources.list | sed s/\$OS/$OS/g | sudo tee -a /etc/apt/sources.list > /dev/null
+sudo -E bash $BASE/boot/config/install-npm@10.sh
 if [ "$OS" = "ubuntu" ]; then
 	sudo add-apt-repository universe
 #elif [ "$OS" = "debian" ]; then
@@ -42,16 +43,28 @@ fi
 sudo apt update
 
 # install stuff
-sudo apt install -y `cat $BASE/config/apt-pkgs | tr "\n" " "`
+sudo apt install -y `cat $BASE/boot/config/apt-pkgs | tr "\n" " "`
+if [ "$OS" = "ubuntu" ]; then
+	sudo apt install -y libdvdcss2
+fi
 sudo apt -y autoremove
 pip install --upgrade pip
 
-# various config stuff
+# local bins
 sudo cp $BASE/boot/scripts/vplay.sh /usr/local/bin/vplay
+
+# hexchat config
 mkdir -p ~/.config/hexchat
-sudo cp $BASE/boot/config/hexchat.conf ~/.config/hexchat/
+echo -n "IRC password: ";read -s password;echo
+cat $BASE/boot/config/servlist.conf | sed s/\%\%PASSWORD\%\%/$password/g > ~/.config/hexchat/servlist.conf
+cp $BASE/boot/config/hexchat.conf ~/.config/hexchat/
+
+# bash config
 cat $BASE/boot/config/.bashrc >> ~/.bashrc
 . ~/.bashrc
+
+# vim config
+# nothing here yet :/
 
 # git stuff
 git config --global credential.helper cache
