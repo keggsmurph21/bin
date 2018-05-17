@@ -2,7 +2,7 @@
 ## BEGIN CUSTOM ##
 
 # system
-alias la="ls -aF"
+alias ls="ls -aF --color=auto"
 alias inet="ip address | grep inet"
 alias bashrc="vi ~/.bashrc && . ~/.bashrc"
 
@@ -21,19 +21,18 @@ git_add_commit_pus() {
     echo "git commit: Please enter a commit message" >&2
     return 1
   fi
-  gau && gc "$1" && gp
+  git add -u && git commit -m "$1" && git push
 }
 
-export -f git_add_commit_push
-export alias "git!"=git_add_commit_push
-export alias gs="git status"
-export alias ga="git add"
-export alias gaa="git add -A"
-export alias gau="git add -u"
-export alias gc="git commit -m"
-export alias gco="git checkout"
-export alias gb="git checkout -b"
-export alias gp="git push"
-export alias gpu="git push --set-upstream origin `git branch | grep \* | cut -d ' ' -f2`"
+alias "git!"=git_add_commit_push
+alias gs="git status"
+alias ga="git add"
+alias gaa="git add -A"
+alias gau="git add -u"
+alias gc="git commit -m"
+alias gco="git checkout"
+alias gb="git checkout -b"
+alias gp="git push"
+alias gpu="git push --set-upstream origin `git branch | grep \* | cut -d ' ' -f2`"
 
 ## END CUSTOM ##
