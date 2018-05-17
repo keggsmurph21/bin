@@ -16,7 +16,7 @@ alias node=nodejs
 alias python=python3
 
 # git
-git_add_commit_push() {
+git_add_commit_pus() {
   if [ -z "$1" ]; then
     echo "git commit: Please enter a commit message" >&2
     return 1
@@ -24,6 +24,7 @@ git_add_commit_push() {
   gau && gc "$1" && gp
 }
 
+export -f git_add_commit_push
 export alias "git!"=git_add_commit_push
 export alias gs="git status"
 export alias ga="git add"
