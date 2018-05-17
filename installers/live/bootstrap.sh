@@ -26,6 +26,7 @@ get_url "$1.sh"
 get_url config/.bashrc
 get_url config/apt-pkgs
 get_url config/hexchat.conf
+get_url config/servlist.conf
 get_url config/install-npm@10.sh
 get_url config/sources.list
 get_url desktops/gnome.sh
