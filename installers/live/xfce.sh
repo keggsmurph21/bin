@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+#!/bin/bash -e
+
+# make our panel look nice :)
+#cp xfce4-panel.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/
+#pkill -KILL -u $(whoami)
+
+XFCE4_PANEL_XML='<?xml version="1.0" encoding="UTF-8"?>
 
 <channel name="xfce4-panel" version="1.0">
   <property name="configver" type="int" value="2"/>
@@ -81,4 +87,4 @@
       <property name="base-directory" type="string" value="/home/user"/>
     </property>
   </property>
-</channel>
+</channel>'

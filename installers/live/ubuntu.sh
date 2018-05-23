@@ -1,7 +1,7 @@
 #!/bin/bash -e
 #
 # Kevin Murphy
-# install script for Debian-based systems
+# install script for Ubuntu-based systems
 #
 
 # make sure we have a constistent base path
@@ -26,10 +26,12 @@ wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add
 wget -qO - http://download.videolan.org/pub/$OS/videolan-apt.asc | sudo apt-key add -
 cat $BASE/boot/config/sources.list | sed s/\$OS/$OS/g | sudo tee -a /etc/apt/sources.list > /dev/null
 sudo -E bash $BASE/boot/config/install-npm@10.sh
+sudo add-apt-repository universe
 sudo apt update
 
 # install stuff
 sudo apt install -y `cat $BASE/boot/config/apt-pkgs | tr "\n" " "`
+sudo apt install -y libdvdcss2
 sudo apt -y autoremove
 pip install --upgrade pip
 
@@ -53,5 +55,6 @@ cat $BASE/boot/config/.bashrc >> ~/.bashrc
 git config --global credential.helper cache
 git config --global user.email "keggsmurph21@gmail.com"
 git config --global user.name "Kevin Murphy"
+
 
 hexchat &
