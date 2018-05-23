@@ -1,0 +1,47 @@
+#!/bin/bash -e
+
+input() {
+  input=$2
+  if [ -z $input ]; then
+    echo -n "$1: " >/dev/stderr
+    read input
+  fi
+  echo $input
+}
+
+if [ -z $1 ]; then
+  echo 'ERROR: no access token provided (usage: make-groupme-bot ACCESS_TOKEN).'
+  echo '  You can find your access token at https://dev.groupme.com/'
+  exit 1
+fi
+
+GROUPME_TOKEN=$1
+
+if [ -z $GMBOT_GROUP_ID ]; then
+
+  groups=`curl https://api.groupme.com/v3/groups?token=$GROUPME_TOKEN | jq -r '.response[] | @base64'`
+
+  printf "group id\tgroup name\n"
+  printf -- "--------\t----------\n"
+
+  for group in $groups; do
+    decode() {
+      echo $group | base64 --decode | jq -r $1
+    }
+
+    group_id=`decode .group_id`
+    group_name=`decode .name`
+
+    printf "$group_id\t$group_name\n"
+  done
+
+  echo
+  GMBOT_GROUP_ID=`input "Bot group"`
+  echo "GMBOT_GROUP_ID=$GMBOT_GROUP_ID" >> .env
+
+fi
+
+GMBOT_BOT_NAME=`input "Bot name"`
+GMBOT_CALLBACK_URI=`input "Bot callback uri"`
+
+curl -X POST -d "{\"bot\": { \"name\": \"$GMBOT_BOT_NAME\", \"group_id\": \"$GMBOT_GROUP_ID\", \"callback_url\": \"$GMBOT_CALLBACK_URI\" }}" -H 'Content-Type: application/json' https://api.groupme.com/v3/bots?token=$GROUPME_TOKEN | jq
