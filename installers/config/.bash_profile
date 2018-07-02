@@ -2,6 +2,7 @@
 ## BEGIN CUSTOM STUFF ##
 
 export PS1="\u \w$ "
+export PATH=~/.bin:$PATH
 
 alias ls="ls -aFG"
 alias inet="ifconfig | grep inet"
