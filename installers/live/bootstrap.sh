@@ -38,9 +38,9 @@ get_url "$DE.sh"
 # get the config files
 wget -qO - https://api.github.com/repos/keggsmurph21/etc/git/trees/master?recursive=1 > /tmp/git-etc
 for line in `cat /tmp/git-etc`; do
-	if echo "$line" | grep installers/live/config/ >/dev/null; then
+	if echo "$line" | grep installers/config/ >/dev/null; then
 		get_url $line
-	elif echo "$line" | grep installers/live/scripts/ >/dev/null; then
+	elif echo "$line" | grep installers/scripts/ >/dev/null; then
 		get_url $line
 	fi
 done;

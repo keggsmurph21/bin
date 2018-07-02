@@ -1,3 +1,6 @@
+
+## BEGIN CUSTOM STUFF ##
+
 export PS1="\u \w$ "
 
 alias ls="ls -aFG"
@@ -14,4 +17,6 @@ alias gc="git commit -m"
 alias gco="git checkout"
 alias gb="git checkout -b"
 alias gp="git pull && git push"
-alias gpu="git push --set-upstream origin `git branch | grep \* | cut -d ' ' -f2`"
+
+## END CUSTOM STUFF ##
+
